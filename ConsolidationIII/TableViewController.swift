@@ -19,6 +19,12 @@ class TableViewController: UITableViewController {
             target: self,
             action: #selector(addButtonTapped)
         )
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .refresh,
+            target: self,
+            action: #selector(clearButtonTapped)
+        )
     }
 
     override func viewDidLoad() {
@@ -60,5 +66,10 @@ class TableViewController: UITableViewController {
         alert.addAction(.init(title: "Cancel", style: .cancel))
         
         present(alert, animated: true)
+    }
+    
+    @objc func clearButtonTapped() {
+        shoppingList.removeAll()
+        tableView.reloadData()
     }
 }

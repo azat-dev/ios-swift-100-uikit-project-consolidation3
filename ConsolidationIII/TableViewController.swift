@@ -20,11 +20,18 @@ class TableViewController: UITableViewController {
             action: #selector(addButtonTapped)
         )
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .refresh,
-            target: self,
-            action: #selector(clearButtonTapped)
-        )
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(
+                barButtonSystemItem: .action,
+                target: self,
+                action: #selector(shareButtonTapped)
+            ),
+            UIBarButtonItem(
+                barButtonSystemItem: .refresh,
+                target: self,
+                action: #selector(clearButtonTapped)
+            ),
+        ]
     }
 
     override func viewDidLoad() {
@@ -71,5 +78,18 @@ class TableViewController: UITableViewController {
     @objc func clearButtonTapped() {
         shoppingList.removeAll()
         tableView.reloadData()
+    }
+    
+    @objc func shareButtonTapped() {
+        let activity = UIActivityViewController(
+            activityItems: [shoppingList.joined(separator: "\n")],
+            applicationActivities: []
+        )
+        
+        if let leftBarButtonItems = navigationItem.leftBarButtonItems, leftBarButtonItems.count > 0 {
+            activity.popoverPresentationController?.barButtonItem = navigationItem.leftBarButtonItems?[0]
+        }
+        
+        present(activity, animated: true)
     }
 }
